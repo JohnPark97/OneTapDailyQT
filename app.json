@@ -1,0 +1,12 @@
+{
+  "name": "OneTapDailyQT",
+  "displayName": "OneTapDailyQT",
+  "expo": {
+    "name": "OneTapDailyQT",
+    "slug": "OneTapDailyQT",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
