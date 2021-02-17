@@ -4,6 +4,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import {Audio} from "expo-av";
 
 class CountdownButton extends Component {
     constructor(props) {
@@ -38,11 +39,14 @@ class CountdownButton extends Component {
         return result;
     }
 
+    navigateToChapter() {
+        this.props.navigation.navigate('Chapter');
+    }
     render() {
         return (
             <View>
                 <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('Chapter')}>
+                    onPress={() => this.navigateToChapter()}>
                     <Text> {this.convertToMMSS()} </Text>
                 </TouchableOpacity>
             </View>

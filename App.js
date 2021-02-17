@@ -22,13 +22,17 @@ import Mood from "./src/constants/Mood";
 import Answers from "./src/constants/Answers";
 import Books from "./src/constants/Books";
 import CountdownButton from "./src/components/countdownButton";
+import { Audio } from "expo-av";
 
 global.currentBook = "";
+global.audioPlaying = false;
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.currentBook = '';
+        this.state = {
+            soundPlayingStatus: "none",
+        };
     }
 
     render() {
@@ -85,6 +89,8 @@ class App extends Component {
             </NavigationContainer>
         );
     }
+
+
 }
 
 const Stack = createStackNavigator();
@@ -204,15 +210,6 @@ function SuggestScreen({navigation}) {
     )
 }
 
-function MeditationScreen({navigation}) {
-    return (
-        <View>
-            <Text>Choose a chapter and meditate on what God is telling you today</Text>
-            <CountdownButton navigation={navigation} init={15}/>
-        </View>
-    )
-}
-
 function getChapters({navigation}) {
     let chapters = 0;
     {
@@ -229,6 +226,39 @@ function getChapters({navigation}) {
         )
     }
     return buttons;
+}
+
+async function playSound(soundObject) {
+    audioPlaying = true;
+    await soundObject.loadAsync(require('./src/assets/audio/meditation.mp3'))
+    await soundObject.playAsync();
+}
+
+async function pauseSound(soundObject) {
+    await soundObject.pause();
+}
+
+async function resumeSound(soundObject) {
+    await soundObject.resumeAsync();
+}
+
+function MeditationScreen({navigation}) {
+    var soundObject = new Audio.Sound();
+    if (!audioPlaying) {
+        playSound(soundObject);
+    }
+    return (
+        <View>
+            <Text>Choose a chapter and meditate on what God is telling you today</Text>
+            <CountdownButton navigation={navigation} init={15}/>
+            <Icon name='caretright'
+                  onPress={() => resumeSound(soundObject)}
+                  type='antdesign'/>
+            <Icon name='pause'
+                  onPress={() => pauseSound(soundObject)}
+                  type='antdesign'/>
+        </View>
+    )
 }
 
 function ChapterScreen({navigation}) {
